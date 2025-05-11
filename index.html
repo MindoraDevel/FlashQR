@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>FlashQR</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlashQR - Professional QR Code Generator & Scanner</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 20px;
+      color: #a74cf2;
+      text-shadow: 0 0 15px rgba(167, 76, 242, 0.7);
+      letter-spacing: 2px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="text"], input[type="email"], input[type="file"] {
+      width: 90%;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #a74cf2;
+      margin-bottom: 15px;
+      outline: none;
+      background-color: #2a2a2a;
+      color: white;
+      transition: border 0.3s;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="file"]:focus {
+      border: 1px solid #8f2de4;
+    }
+
+    button {
+      background: linear-gradient(45deg, #a74cf2, #8f2de4);
+      border: none;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      box-shadow: 0 4px 10px rgba(167, 76, 242, 0.4);
+      transition: transform 0.3s, background 0.3s;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #8f2de4, #a74cf2);
+      transform: translateY(-2px);
+    }
+
+    #qrCode {
+      margin-top: 25px;
+      position: relative;
+    }
+
+    img {
+      margin-top: 15px;
+      border: 4px solid #a74cf2;
+      border-radius: 12px;
+      background: white;
+      max-width: 100%;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    #scanner {
+      background: linear-gradient(45deg, #a74cf2, #8f2de4);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    #qrScannerContainer {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .ad-container {
+      margin: 20px auto;
+      padding: 10px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      width: 320px;
+      height: 50px;
+      position: relative;
+      text-align: center;
+    }
+
+    .ad-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .top-ad {
+      margin-bottom: 30px;
+    }
+
+    .bottom-ad {
+      margin-top: 30px;
+    }
+
+    /* লোডিং অ্যানিমেশন */
+    .loader {
+      display: none;
+      width: 50px;
+      height: 50px;
+      border: 5px solid transparent;
+      border-top: 5px solid #a74cf2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* প্রফেশনাল সেকশন স্টাইল */
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+      background: #222;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .section h3 {
+      color: #a74cf2;
+      margin-bottom: 10px;
+    }
+
+    .download-info {
+      margin-top: 10px;
+      color: #a74cf2;
+      font-size: 0.9em;
+    }
+
+    #scanResult {
+      margin-top: 15px;
+      padding: 10px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Ad (Profitableratecpm) -->
+  <div class="ad-container top-ad">
+    <div class="ad-label">ADVERTISEMENT</div>
+    <div id="ad-container-top">
+      <script async="async" data-cfasync="false" src="//pl26617357.profitableratecpm.com/570e465d1281c05989d1eff55ec90316/invoke.js"></script>
+      <div id="container-570e465d1281c05989d1eff55ec90316"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>FlashQR</h1>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="section">
+      <h3>লগইন করুন</h3>
+      <input type="email" id="userEmail" placeholder="আপনার Gmail দিন" />
+      <input type="text" id="userName" placeholder="আপনার নাম দিন" />
+      <button onclick="login()">লগইন করুন</button>
+    </div>
+
+    <!-- QR Code Generator Section -->
+    <div id="qrSection" style="display:none;" class="section">
+      <h3>QR কোড তৈরি করুন</h3>
+      <input type="text" id="qrText" placeholder="এখানে লিংক বা টেক্সট দিন" />
+      <button onclick="generateQR()">QR তৈরি করুন</button>
+      <div class="loader" id="qrLoader"></div>
+      <div id="qrCode"></div>
+      <input type="text" id="qrFileName" placeholder="ফাইলের নাম দিন (ঐচ্ছিক)" style="display:none;" />
+      <button id="downloadBtn" onclick="downloadQR()" style="display:none;">ডাউনলোড করুন</button>
+      <div id="downloadInfo" class="download-info"></div>
+    </div>
+
+    <!-- QR Scanner Section -->
+    <div id="scannerSection" style="display:none;" class="section">
+      <h3>QR কোড স্ক্যান করুন</h3>
+      <button id="scanCameraBtn" onclick="startCameraScan()">ক্যামেরা দিয়ে স্ক্যান করুন</button>
+      <input type="file" id="qrImageUpload" accept="image/*" />
+      <button id="scanImageBtn" onclick="scanFromImage()" style="display:none;">ছবি থেকে স্ক্যান করুন</button>
+      <div id="qrScannerContainer">
+        <div id="reader" style="width: 100%; height: 400px;"></div>
+        <button onclick="stopScan()">স্ক্যানিং বন্ধ করুন</button>
+      </div>
+      <div id="scanResult"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Ad (Profitableratecpm) -->
+  <div class="ad-container bottom-ad">
+    <div class="ad-label">ADVERTISEMENT</div>
+    <div id="ad-container-bottom">
+      <script async="async" data-cfasync="false" src="//pl26617357.profitableratecpm.com/570e465d1281c05989d1eff55ec90316/invoke.js"></script>
+      <div id="container-570e465d1281c05989d1eff55ec90316"></div>
+    </div>
+  </div>
+
+  <!-- Popunder/Direct Link Ad (Profitableratecpm) -->
+  <script type='text/javascript' src='//pl26617369.profitableratecpm.com/29/ea/e6/29eae6d78e3c7bd1c117c7ce0de0d7f9.js'></script>
+
+  <footer>Created by Mindora | All rights reserved</footer>
+
+  <script>
+    let qrImageData = null;
+    let html5QrCode = null;
+
+    // অ্যাড ব্লকার সনাক্তকরণ
+    function checkAdBlock() {
+      const adContainer = document.getElementById('ad-container-top');
+      if (adContainer.offsetHeight === 0) {
+        alert('দয়া করে অ্যাড ব্লকার বন্ধ করুন!');
+      }
+    }
+    window.onload = checkAdBlock;
+
+    function login() {
+      const email = document.getElementById("userEmail").value;
+      const userName = document.getElementById("userName").value;
+      if (email && userName) {
+        alert("লগইন সফল!");
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("qrSection").style.display = "block";
+        document.getElementById("scannerSection").style.display = "block";
+      } else {
+        alert("অনুগ্রহ করে সমস্ত তথ্য দিন!");
+      }
+    }
+
+    function generateQR() {
+      const text = document.getElementById("qrText").value;
+      const qrCodeDiv = document.getElementById("qrCode");
+      const qrLoader = document.getElementById("qrLoader");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const fileNameInput = document.getElementById("qrFileName");
+      const downloadInfo = document.getElementById("downloadInfo");
+
+      if (!text) {
+        alert("দয়া করে একটি লিংক বা টেক্সট দিন!");
+        return;
+      }
+
+      qrCodeDiv.innerHTML = "";
+      downloadBtn.style.display = "none";
+      fileNameInput.style.display = "none";
+      downloadInfo.innerHTML = "";
+      qrLoader.style.display = "block";
+
+      setTimeout(() => {
+        QRCode.toDataURL(text, {
+          width: 256,
+          color: { dark: "#000000", light: "#ffffff" }
+        }, function (err, url) {
+          qrLoader.style.display = "none";
+          if (err) {
+            alert("QR কোড তৈরি করতে সমস্যা হয়েছে!");
+            return;
+          }
+
+          qrImageData = url;
+          const img = document.createElement("img");
+          img.src = url;
+          qrCodeDiv.appendChild(img);
+          fileNameInput.style.display = "block";
+          downloadBtn.style.display = "block";
+        });
+      }, 1000);
+    }
+
+    function downloadQR() {
+      if (!qrImageData) {
+        alert("প্রথমে QR কোড তৈরি করুন!");
+        return;
+      }
+
+      const fileNameInput = document.getElementById("qrFileName").value || "qr-code";
+      const downloadInfo = document.getElementById("downloadInfo");
+
+      const link = document.createElement("a");
+      link.href = qrImageData;
+      link.download = `${fileNameInput}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      downloadInfo.innerHTML = `ফাইল "${fileNameInput}.png" সফলভাবে ডাউনলোড হয়েছে! ডাউনলোড ফোল্ডারে চেক করুন।`;
+      setTimeout(() => { downloadInfo.innerHTML = ""; }, 5000);
+    }
+
+    function startCameraScan() {
+      const qrScannerContainer = document.getElementById('qrScannerContainer');
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("reader");
+      }
+      qrScannerContainer.style.display = 'block';
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        (decodedText, decodedResult) => {
+          displayScanResult(decodedText);
+          html5QrCode.stop().then(() => {
+            qrScannerContainer.style.display = 'none';
+          }).catch((err) => {
+            console.log("স্ক্যানিং বন্ধ করতে সমস্যা:", err);
+          });
+        },
+        (errorMessage) => {
+          console.log("স্ক্যানিং ত্রুটি:", errorMessage);
+        }
+      ).catch((err) => {
+        alert("ক্যামেরা অ্যাক্সেসে সমস্যা! ব্রাউজারের পারমিশন চেক করুন।");
+        console.error("স্ক্যানিং শুরু করা সম্ভব হয়নি:", err);
+      });
+    }
+
+    function scanFromImage() {
+      const fileInput = document.getElementById('qrImageUpload');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("দয়া করে একটি ছবি সিলেক্ট করুন!");
+        return;
+      }
+
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode("reader");
+      }
+      html5QrCode.scanFile(file, true)
+        .then(decodedText => {
+          displayScanResult(decodedText);
+        })
+        .catch(err => {
+          alert("ছবি থেকে QR কোড স্ক্যান করতে সমস্যা হয়েছে! সঠিক ছবি ব্যবহার করুন।");
+          console.error("স্ক্যান ত্রুটি:", err);
+        });
+    }
+
+    function stopScan() {
+      if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+          document.getElementById('qrScannerContainer').style.display = 'none';
+          console.log("QR কোড স্ক্যানিং বন্ধ করা হয়েছে!");
+        }).catch((err) => {
+          console.error("স্ক্যানিং বন্ধ করতে সমস্যা:", err);
+        });
+      }
+    }
+
+    function displayScanResult(text) {
+      const scanResult = document.getElementById('scanResult');
+      scanResult.style.display = 'block';
+      scanResult.innerHTML = `স্ক্যান করা তথ্য: ${text}`;
+      if (isValidUrl(text)) {
+        scanResult.innerHTML += `<br><a href="${text}" target="_blank">লিঙ্কে যান</a>`;
+      }
+      setTimeout(() => { scanResult.style.display = 'none'; }, 10000); // 10 সেকেন্ড পর লুকানো
+    }
+
+    function isValidUrl(string) {
+      try {
+        new URL(string);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    // ফাইল সিলেক্ট হলে স্ক্যান বোতাম প্রদর্শন
+    document.getElementById('qrImageUpload').addEventListener('change', function() {
+      document.getElementById('scanImageBtn').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
